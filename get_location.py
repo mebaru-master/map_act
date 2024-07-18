@@ -13,7 +13,7 @@ import googlemaps
 # 取得したGoogleのAPIキー
 googleapikey = 'AIzaSyAPByiyXf_OXc_xqauP1ViE3paFBPI-w1U'
 # 出力先のフォルダのパス
-output_path = '/workspaces/map_act/output'
+output_path = '~/workspaces/map_act/output'
 pixel = '640x480'
 scale = '18'
 
