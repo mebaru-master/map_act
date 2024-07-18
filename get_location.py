@@ -11,7 +11,7 @@ import googlemaps
 
 # パラメータの設定
 # 取得したGoogleのAPIキー
-googleapikey = '取得したGoogleのAPIキー'
+googleapikey = 'AIzaSyAPByiyXf_OXc_xqauP1ViE3paFBPI-w1U'
 # 出力先のフォルダのパス
 output_path = '/workspaces/map_act/output'
 pixel = '640x480'
