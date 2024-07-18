@@ -9,6 +9,15 @@ from pygeocoder import Geocoder
 import googlemaps
 
 
+# パラメータの設定
+# 取得したGoogleのAPIキー
+googleapikey = '取得したGoogleのAPIキー'
+# 出力先のフォルダのパス
+output_path = '/workspaces/map_act/output'
+pixel = '640x480'
+scale = '18'
+
+
 def geocode_address(loc):
     # リストの初期化
     loc_dict = []
@@ -93,48 +102,47 @@ def download_image(loc):
         except urllib.error.URLError as e:
             print(e)
 
-"""
-# メイン処理
-# 参考サイト: https://qiita.com/Spooky_Maskman/items/9f4c487ed884d803641b
-"""
 
-# パラメータの設定
-# 取得したGoogleのAPIキー
-googleapikey = '取得したGoogleのAPIキー'
-# 出力先のフォルダのパス
-output_path = '/workspaces/map_act/output'
-pixel = '640x480'
-scale = '18'
-
-# リストの初期化
-location = []
-
-# リストに場所や地名を追加する
-location = ["国会議事堂", "วัดพระแก้ว", "New York City", "Государственный Эрмитаж", "مكة المكرمة"]
-
-# リストの表示
-print(location)
-
-# geocodeで取得できる情報の一覧の例（国会議事堂の場合）
-gmaps = googlemaps.Client(key=googleapikey)
-address = u'国会議事堂'
-result = gmaps.geocode(address)
-print(result)
-
-# 上記の取得情報一覧より緯度・経度の情報のみを抽出
-lat = result[0]["geometry"]["location"]["lat"]
-loc = result[0]["geometry"]["location"]["lng"]
-print (lat,loc)
+def main():
+    """
+    # メイン処理
+    # 参考サイト: https://qiita.com/Spooky_Maskman/items/9f4c487ed884d803641b
+    """
 
 
-# locationの緯度と経度の情報を取得する
-geocode_address(location)
+    # リストの初期化
+    location = []
+
+    # リストに場所や地名を追加する
+    location = ["国会議事堂", "วัดพระแก้ว", "New York City", "Государственный Эрмитаж", "مكة المكرمة"]
+
+    # リストの表示
+    print(location)
+
+    # geocodeで取得できる情報の一覧の例（国会議事堂の場合）
+    gmaps = googlemaps.Client(key=googleapikey)
+    address = u'国会議事堂'
+    result = gmaps.geocode(address)
+    print(result)
+
+    # 上記の取得情報一覧より緯度・経度の情報のみを抽出
+    lat = result[0]["geometry"]["location"]["lat"]
+    loc = result[0]["geometry"]["location"]["lng"]
+    print (lat,loc)
 
 
-# 上記で出力したloc.csvをインポート
-loc = pd.read_csv(output_path + '\\loc.csv', index_col = 'Unnamed: 0')
+    # locationの緯度と経度の情報を取得する
+    geocode_address(location)
 
 
-# 緯度経度の情報より画像を取得する
-download_image(loc)
+    # 上記で出力したloc.csvをインポート
+    loc = pd.read_csv(output_path + '\\loc.csv', index_col = 'Unnamed: 0')
+
+
+    # 緯度経度の情報より画像を取得する
+    download_image(loc)
+
+
+if __name__ == '__main__':
+    main()
 
