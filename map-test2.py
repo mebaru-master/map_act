@@ -8,15 +8,15 @@ import urllib.request
 #from pygeocoder import Geocoder
 import googlemaps
 
-
+API_KEY = 'AIzaSyAwRK1v-32Vx5I-Du33_BN2a2sSpD4sbbI'
 # パラメータの設定
-# 取得したGoogleのAPIキー
-googleapikey = 'AIzaSyAPByiyXf_OXc_xqauP1ViE3paFBPI-w1U'
-# 出力先のフォルダのパス
-#output_path = '~/workspaces/map_act/output'
-output_path = './'
-pixel = '640x480'
-scale = '18'
+googleapikey = API_KEY
+output_path = './output'
+#pixel = '640x480'
+pixel = '1024x768'
+#scale = '18'
+scale = '14'
+
 
 
 def geocode_address(loc):
@@ -28,6 +28,8 @@ def geocode_address(loc):
 
     # geocodeにより緯度・経度の情報をループ処理で取得
     for row in rows[0:]:
+        print(row)
+        print()
         gmaps = googlemaps.Client(key=googleapikey)
         geocode_result = gmaps.geocode(row)
 
@@ -49,7 +51,6 @@ def geocode_address(loc):
 
     # データの出力
     df.to_csv(output_path + '\\loc.csv')
-
 
 
 # defによる関数オブジェクトの作成
@@ -104,46 +105,49 @@ def download_image(loc):
             print(e)
 
 
-def main():
-    """
-    # メイン処理
-    # 参考サイト: https://qiita.com/Spooky_Maskman/items/9f4c487ed884d803641b
-    """
+
+# リストの初期化
+location = []
+
+# リストに場所や地名を追加する
+#location = ["国会議事堂", "วัดพระแก้ว", "New York City", "Государственный Эрмитаж", "مكة المكرمة"]
+location = ["富山駅","関西国際空港","Ninoy Aquino International airport terminal 2","Ninoy Aquino International airport terminal 4","Caticlan airport","Caticlan Jetty port","Boracay Jetty port","Boracay Nation"]
+#location = ["富山駅","KIX"]
+
+# リストの表示
+print(location)
+print()
 
 
-    # リストの初期化
-    location = []
-
-    # リストに場所や地名を追加する
-    location = ["国会議事堂", "วัดพระแก้ว", "New York City", "Государственный Эрмитаж", "مكة المكرمة"]
-
-    # リストの表示
-    print(location)
-
-    # geocodeで取得できる情報の一覧の例（国会議事堂の場合）
-    gmaps = googlemaps.Client(key=googleapikey)
-    address = u'国会議事堂'
-    result = gmaps.geocode(address)
-    print(result)
-
-    # 上記の取得情報一覧より緯度・経度の情報のみを抽出
-    lat = result[0]["geometry"]["location"]["lat"]
-    loc = result[0]["geometry"]["location"]["lng"]
-    print (lat,loc)
+# geocodeで取得できる情報の一覧の例（国会議事堂の場合）
+gmaps = googlemaps.Client(key=googleapikey)
+address = u'国会議事堂'
+#address = u'富山駅'
+#address = u'関西国際空港'
+#address = 'Ninoy Aquino International airport'
+#address = 'Caticlan airport'
+#address = 'Caticlan Jetty port'
+#address = 'Boracay Jetty port'
+#address = 'Boracay Nation'
+result = gmaps.geocode(address)
+print(result)
+print()
 
 
-    # locationの緯度と経度の情報を取得する
-    geocode_address(location)
+# 上記の取得情報一覧より緯度・経度の情報のみを抽出
+lat = result[0]["geometry"]["location"]["lat"]
+lon = result[0]["geometry"]["location"]["lng"]
+print (lat,lon)
+print()
 
 
-    # 上記で出力したloc.csvをインポート
-    loc = pd.read_csv(output_path + '\\loc.csv', index_col = 'Unnamed: 0')
+# locationの緯度と経度の情報を取得する
+geocode_address(location)
 
+# 上記で出力したloc.csvをインポート
+loc = pd.read_csv(output_path + '\\loc.csv', index_col = 'Unnamed: 0')
 
-    # 緯度経度の情報より画像を取得する
-    download_image(loc)
+# 緯度経度の情報より画像を取得する
+download_image(loc)
 
-
-if __name__ == '__main__':
-    main()
 
